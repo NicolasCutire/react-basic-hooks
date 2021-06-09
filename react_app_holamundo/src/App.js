@@ -38,7 +38,7 @@ const style = {
 function Libro({numero,titulo, año }) {
   return (
     <div>    
-      <span> {numero}</span>
+      <span style = {{marginRight:5}}> {numero}</span>
       <span>{titulo}</span>
       <br></br>
       <span>{año}</span>
@@ -50,12 +50,12 @@ function Autor({nombre, edad,libros}){
   
   return(
     <div>
-      <h1>{nombre}</h1>
-      <span>{edad}</span>
+      <h1>nombre: {nombre}</h1>
+      <span>edad : {edad}</span>
       <br/>
       {
         libros.map((libro,idx) => (
-          <Libro numero= {idx + 1} titulo = {libro.titulo} año = {libro.año}/>          
+          <Libro numero= {idx + 1 } titulo = {libro.titulo} año = {libro.año}/>          
         ))
       }
     </div>
@@ -160,7 +160,8 @@ function App() {
     },
   ]
   function actualizarDatos(autores){
-    setAutores(autores)
+    const nuevaData = [...autores]
+    setAutores(nuevaData)
     console.log(datosAutores)
   }
   return (
