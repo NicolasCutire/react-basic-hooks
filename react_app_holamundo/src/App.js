@@ -1,5 +1,5 @@
 import logo from './logo.svg';
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import './App.css';
 const style = {
   table: {
@@ -81,7 +81,7 @@ function Counter(){
     </div>
   )
 }
-function FormBook({autores}){
+function FormBook({autores, setAutores}){
   const titleRef = useRef(null);
   const yearRef = useRef(null);
   const autorRef = useRef(null);
@@ -90,9 +90,11 @@ function FormBook({autores}){
     const title = titleRef.current.value;
     const year = yearRef.current.value;
     const autor = autorRef.current.value;
-    const book = {title,year,autor}
-    console.log(book)  
-
+    const book = {titulo: title,año:year}
+    const foundautor = autores.findIndex(element => element.nombre === autor);
+    autores[foundautor].libros.push(book)
+    console.log(autores)    
+    setAutores(autores);
   }
   return(
     <form onSubmit={addBook} style={style.form.container}>
@@ -124,7 +126,7 @@ function FormBook({autores}){
        name ="select"
        ref = {autorRef}
        >
-        {autores.map( (a)=>
+        {autores.map((a)=>
           <option value={a.nombre}>{a.nombre}</option>    
         )}        
       </select>
@@ -141,6 +143,12 @@ function FormBook({autores}){
   )
 }
 function App() {
+  const Autores = [
+    {nombre: 'nikko',edad: 19,libros:[]},
+    {nombre: 'Willy',edad: 8,libros:[]},
+  ]
+  const [datosAutores,setAutores] = useState(Autores);
+  useEffect (()=>{console.log(datosAutores)});
   const LibrosNikko = [
     {
         titulo : '120 dias sodomoa',
@@ -151,15 +159,17 @@ function App() {
       año: 2080
     },
   ]
-  const Autores = [
-    {nombre: 'nikko',edad: 19,libros:[]},
-    {nombre: 'Willy',edad: 8,libros:[]},
-  ]
+  function actualizarDatos(autores){
+    setAutores(autores)
+    console.log(datosAutores)
+  }
   return (
     <>
-    <Autor nombre = "Nikko" edad = {25} libros = {LibrosNikko}/>
+    {datosAutores.map((a)=>
+      <Autor nombre = {a.nombre} edad = {a.edad} libros = {a.libros}/>    
+    )}
     <Counter/>
-    <FormBook autores = {Autores}/>
+    <FormBook autores = {datosAutores} setAutores = {actualizarDatos}/>
     </>
   );
 }
